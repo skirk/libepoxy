@@ -9,12 +9,16 @@ generated_sources = [
   [ 'gl_generated_dispatch.c', gl_registry, [ 'dispatch_common.c', 'dispatch_common.h' ] ]
 ]
 
+epoxy_deps = [ dl_dep, ]
+
 if build_egl
   generated_sources += [ [ 'egl_generated_dispatch.c', egl_registry, 'dispatch_egl.c' ] ]
+  epoxy_deps += [ egl_dep ]
 endif
 
 if build_glx
   generated_sources += [ [ 'glx_generated_dispatch.c', glx_registry, 'dispatch_glx.c' ] ]
+  epoxy_deps += [ x11_dep ]
 endif
 
 if build_wgl
@@ -58,7 +62,6 @@ if host_system == 'darwin'
   common_ldflags += [ '-compatibility_version 1', '-current_version 1.0', ]
 endif
 
-epoxy_deps = [ dl_dep, ]
 if host_system == 'windows'
   epoxy_deps += [ opengl32_dep, gdi32_dep ]
 endif
